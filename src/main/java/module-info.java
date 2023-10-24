@@ -1,6 +1,7 @@
 module com.example.preparcial_2 {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.logging;
 
 
     exports com.example.preparcial_2.application;

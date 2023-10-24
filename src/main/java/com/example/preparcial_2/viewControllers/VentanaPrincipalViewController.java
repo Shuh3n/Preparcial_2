@@ -1,10 +1,15 @@
 package com.example.preparcial_2.viewControllers;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import com.example.preparcial_2.Controller.ModelFactoryController;
 import com.example.preparcial_2.model.Usuario;
+import com.example.preparcial_2.persistencia.Persistencia;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,6 +34,11 @@ public class VentanaPrincipalViewController implements Initializable {
     private Button btnLimpiarCampos;
 
     @FXML
+    private Button btnBuscarInfo;
+    @FXML
+    private Button btnLimpiarInfo;
+
+    @FXML
     private TableColumn<Usuario, String> columnCodigo;
 
     @FXML
@@ -47,6 +57,24 @@ public class VentanaPrincipalViewController implements Initializable {
     private TableView<Usuario> tablerViewRegistros;
 
     @FXML
+    private TableColumn<Usuario, String> columnCodigo1;
+
+    @FXML
+    private TableColumn<Usuario, String> columnNombre1;
+
+    @FXML
+    private TableColumn<Usuario, String> columnNota11;
+
+    @FXML
+    private TableColumn<Usuario, String> columnNota21;
+
+    @FXML
+    private TableColumn<Usuario, String> columnNota31;
+
+    @FXML
+    private TableView<Usuario> tablerViewRegistros1;
+
+    @FXML
     private TextField txtCodigo;
 
     @FXML
@@ -60,9 +88,13 @@ public class VentanaPrincipalViewController implements Initializable {
 
     @FXML
     private TextField txtNota3;
+
+    @FXML
+    private TextField txtBuscarCodigo;
     private Stage stage;
 
     ObservableList<Usuario> listaUsuarios= FXCollections.observableArrayList();
+    private ObservableList<Usuario> listaUsuarios2 = FXCollections.observableArrayList();
 
     @FXML
     void crearUsuario(ActionEvent event) {
@@ -75,18 +107,50 @@ public class VentanaPrincipalViewController implements Initializable {
         if(validarDatos(nombre,codigo,nota1,nota2,nota3)){
             crearUsuarioConfirmado(nombre,codigo,nota1,nota2,nota3);
             tablerViewRegistros.setItems( getListaUsuarios() );
-            limpiarCampos(event);
         }
+    }
+
+    @FXML
+    void encontrarUsuario(ActionEvent event) throws IOException {
+        String codigo = txtBuscarCodigo.getText();
+        if(codigo!=null || !codigo.isEmpty()){
+            Usuario usuarioBuscado = encontrarUsuarioLista( Persistencia.cargarUsuarios(), codigo );
+            if(usuarioBuscado!=null){
+                tablerViewRegistros1.setItems( setValuesTableView2( usuarioBuscado ));
+                txtBuscarCodigo.clear();
+            }else{
+                mostrarMensaje( "Notificación", "Usuario no encontrado", "Asegurese de haber escrito bien el código", Alert.AlertType.INFORMATION );
+            }
+        }else{
+            mostrarMensaje( "Noticación", "Campos vacíos", "Diligencie el codigo que desea buscar", Alert.AlertType.INFORMATION );
+        }
+
+
+    }
+
+    @FXML
+    void limpiarInfo(ActionEvent event) throws IOException {
+        tablerViewRegistros1.getItems().clear();
+    }
+
+    public Usuario encontrarUsuarioLista(ArrayList<Usuario> listaUsuarios, String codigo){
+        Usuario usuarioEncontrado = listaUsuarios.stream()
+                .filter(usuario -> usuario.getCodigo().equals(codigo))
+                .findFirst()
+                .orElse(null);
+        return usuarioEncontrado;
     }
 
     private void crearUsuarioConfirmado(String nombre , String codigo , String nota1 , String nota2 , String nota3) {
         boolean flag = ModelFactoryController.getInstance().crearUsuario(nombre,codigo,nota1,nota2,nota3);
         if(flag){
             mostrarMensaje( "Notificación de Usuario", "Usuario creado con éxito", "", Alert.AlertType.INFORMATION );
+            limpiarCampos( new ActionEvent() );
         }
         else{
             mostrarMensaje( "Notificación de Usuario", "Usuario no creado", "Ya existe un usuario registrado con este código",
                     Alert.AlertType.INFORMATION );
+            txtCodigo.clear();
         }
     }
 
@@ -178,12 +242,25 @@ public class VentanaPrincipalViewController implements Initializable {
         this.columnNota1.setCellValueFactory(new PropertyValueFactory<>("nota1"));
         this.columnNota2.setCellValueFactory(new PropertyValueFactory<>("nota2"));
         this.columnNota3.setCellValueFactory(new PropertyValueFactory<>("nota3"));
+
+        this.columnNombre1.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        this.columnCodigo1.setCellValueFactory(new PropertyValueFactory<>("codigo"));
+        this.columnNota11.setCellValueFactory(new PropertyValueFactory<>("nota1"));
+        this.columnNota21.setCellValueFactory(new PropertyValueFactory<>("nota2"));
+        this.columnNota31.setCellValueFactory(new PropertyValueFactory<>("nota3"));
+
+        txtBuscarCodigo.setOnAction(event -> btnBuscarInfo.fire());
     }
 
     private ObservableList<Usuario> getListaUsuarios() {
         listaUsuarios.clear();
         listaUsuarios.addAll(ModelFactoryController.getInstance().getUsuario().getUsuarios());
         return listaUsuarios;
+    }
+    private ObservableList<Usuario> setValuesTableView2(Usuario usuario) {
+        listaUsuarios2.clear();
+        listaUsuarios2.addAll(usuario);
+        return listaUsuarios2;
     }
 
 }

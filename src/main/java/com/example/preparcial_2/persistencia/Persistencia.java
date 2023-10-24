@@ -11,18 +11,17 @@ import java.util.List;
 public class Persistencia {
 
     public static final String RUTA_ARCHIVO_USUARIOS = "src/main/resources/com/example/preparcial_2/persistencia/archives/archiveUsuarios.txt";
+    private static final String RUTA_ARCHIVO_LOG = "src/main/resources/com/example/preparcial_2/persistencia/logs/log.txt";
 
-    public static void guardarUsuarios(List<Usuario> listaUsuarios) throws IOException {
+    public static void guardarUsuarios(Usuario usuario) throws IOException {
         String contenido = "";
-        for (Usuario usuario : listaUsuarios) {
             contenido += usuario.getNombre() + "@@"
                     + usuario.getCodigo() + "@@"
                     + usuario.getNota1() + "@@"
-                    + usuario.getNota1() + "@@"
                     + usuario.getNota2() + "@@"
                     + usuario.getNota3() + "\n";
-        }
-        ArchivoUtil.guardarArchivo(RUTA_ARCHIVO_USUARIOS, contenido, false);
+
+        ArchivoUtil.guardarArchivo(RUTA_ARCHIVO_USUARIOS, contenido, true);
     }
 
     public static ArrayList<Usuario> cargarUsuarios() throws FileNotFoundException, IOException {
@@ -40,6 +39,10 @@ public class Persistencia {
             usuarios.add(usuario);
         }
         return usuarios;
+    }
+
+    public static void guardaRegistroLog(String mensajeLog, int nivel, String accion) {
+        ArchivoUtil.guardarRegistroLog(mensajeLog, nivel, accion, RUTA_ARCHIVO_LOG);
     }
 
 }

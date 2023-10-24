@@ -27,7 +27,8 @@ public class ModelFactoryController {
     public ModelFactoryController(){
         inicializarDatos();
         cargarUsuarios();
-        guardarUsuarios();
+        Persistencia.guardaRegistroLog( "Aplicación iniciada", 1 , "Aplicación abierta y usada" );
+
     }
 
     private void inicializarDatos() {
@@ -44,17 +45,21 @@ public class ModelFactoryController {
 
     public boolean crearUsuario(String nombre , String codigo , String nota1 , String nota2 , String nota3){
         Usuario newUsuario = new Usuario(nombre,codigo,nota1,nota2,nota3);
-        return usuario.crearUsuario(newUsuario);
+        boolean flag = usuario.crearUsuario(newUsuario);
+        if ( flag ){
+            guardarUsuarios( newUsuario );
+            Persistencia.guardaRegistroLog( "Usuario creado", 1, "Se ha creado un usuario" );
+        }
+        return flag;
     }
 
-    private void guardarUsuarios() {
+    private void guardarUsuarios(Usuario newUsuario) {
         try {
-            Persistencia.guardarUsuarios(getUsuario().getUsuarios());
-            System.out.println("Usuarios Guardados");
+            Persistencia.guardarUsuarios(newUsuario);
+            System.out.println("Usuario Guardado");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     private void cargarUsuarios() {

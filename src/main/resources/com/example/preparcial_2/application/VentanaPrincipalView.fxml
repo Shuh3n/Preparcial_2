@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="584.0" prefWidth="744.0" stylesheets="@../styles/TxtStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.preparcial_2.viewControllers.VentanaPrincipalViewController">
    <children>
-      <TabPane layoutX="55.0" layoutY="43.0" prefHeight="584.0" prefWidth="744.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TabPane layoutX="55.0" layoutY="43.0" prefHeight="584.0" prefWidth="744.0" stylesheets="@../styles/TxtStyle.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
           <Tab text="Registro">
             <content>
@@ -78,6 +78,31 @@
                   </AnchorPane>
             </content>
           </Tab>
+            <Tab text="Buscar usuario">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Text layoutX="46.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingrese el código del usuario" wrappingWidth="197.9765625">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="txtBuscarCodigo" layoutX="298.0" layoutY="43.0" styleClass="text-field-custom" stylesheets="@../styles/TxtStyle.css" />
+                        <TableView fx:id="tablerViewRegistros1" layoutX="14.0" layoutY="117.0" prefHeight="60.0" prefWidth="700.0">
+                           <columns>
+                              <TableColumn fx:id="columnNombre1" prefWidth="145.0" text="Nombre" />
+                              <TableColumn fx:id="columnCodigo1" prefWidth="144.0" text="Código" />
+                              <TableColumn fx:id="columnNota11" prefWidth="118.0" text="Nota 1" />
+                              <TableColumn fx:id="columnNota21" prefWidth="141.0" text="Nota 2" />
+                              <TableColumn fx:id="columnNota31" prefWidth="151.0" text="Nota 3" />
+                           </columns>
+                        </TableView>
+                        <Button fx:id="btnBuscarInfo" layoutX="513.0" layoutY="43.0" mnemonicParsing="false" onAction="#encontrarUsuario" styleClass="miBoton" stylesheets="@../styles/miBoton.css" text="Buscar" />
+                        <Button fx:id="btnLimpiarInfo" layoutX="331.0" layoutY="187.0" mnemonicParsing="false" onAction="#limpiarInfo" style="-fx-background-color: yellow;" styleClass="miBoton" stylesheets="@../styles/miBoton.css" text="Limpiar" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
         </tabs>
       </TabPane>
    </children>
