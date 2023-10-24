@@ -1,0 +1,10 @@
+.miBoton {
+    -fx-background-color: #f4f4f4; /* Color de fondo del botón */
+    -fx-text-fill: #000000; /* Color del texto */
+    -fx-font-size: 14; /* Tamaño de fuente */
+    -fx-border-width: 0; /* Grosor del borde */
+    -fx-border-color: #000000; /* Color del borde */
+    -fx-border-radius: 0; /* Radio del borde */
+    -fx-padding: 5 10; /* Relleno interno del botón */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 15, 0, 0,2); /* Sombras */
+}
